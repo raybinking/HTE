@@ -1,101 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Mint</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: linear-gradient(to bottom right, #B0E0E6, #87CEEB);
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ff99cc, #66ccff); /* ¯»ÂÅ¦âº¥¼h­I´º */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
-        #welcome {
-            margin-top: 20px;
-            font-size: 36px;
-        }
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        #gif-container {
-            margin-top: 20px;
-            border: 10px solid #4682B4; /* Larger border for a bigger frame */
-            border-radius: 15px; /* Optional: Add border-radius for rounded corners */
-            overflow: hidden; /* Hide overflow if the image is larger than the container */
-        }
+    .link {
+      margin: 10px;
+      padding: 15px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #333;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
 
-        #gif {
-            width: 100%; /* Make the image fill the container */
-            height: 100%; /* Maintain aspect ratio */
-        }
-
-        #icons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .icon {
-            width: 50px;
-            height: 50px;
-            background: #4682B4;
-            margin: 0 3px;
-            border-radius: 50%;            
-        }
-
-        #buttons {
-            margin-top: 50px;
-            display: flex;
-            gap: 20px;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background: #4682B4;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+    .link:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 <body>
-    <div id="welcome">Mint your weapon</div>
 
-    <div id="icons">
-        <!-- Display one GIF at a time -->
-        <div id="gif-container">
-            <img id="gif" src="icon1.gif">
-        </div>
-    </div>
-    
-    <div id="buttons">
-        <button class="button">Mint - TBD</button>
-    </div>
+  <div class="links-container">
+    <a href="./Muerehte.html" class="link">Muerehte NFT</a>
+    <a href="./HTE.html" class="link">Muerehte HTE</a>
+  </div>
 
-    <script>
-        // Array of GIFs
-        const gifArray = ["icon1.gif", "icon2.gif", "icon3.gif", "icon4.gif", "icon5.gif"];
-        let currentIndex = 0;
-
-        // Function to update the GIF every second
-        function updateGIF() {
-            // Change the source of the GIF to the next one in the array
-            document.getElementById("gif").src = gifArray[currentIndex];
-
-            // Increment the index, and loop back to the beginning if necessary
-            currentIndex = (currentIndex + 1) % gifArray.length;
-        }
-
-        // Update the GIF every second
-        setInterval(updateGIF, 2000);
-    </script>
 </body>
 </html>
