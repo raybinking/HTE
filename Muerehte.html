@@ -331,14 +331,14 @@ const mintMuerehte = async () => {
     {
     	// wallet balance
         walletBalance = await window.ethereum.request({method: "eth_getBalance", params: [window.userWalletAddress, "latest"]});
-        //if (walletBalance > 20000000000000000)
+        if (walletBalance > 20000000000000000)
         {        	
         	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "3000000", value: web3.utils.toWei("0.02", "ether") });
         }   	
-    	//else
-    	//{
-    	//	alert("Wallet balance is smaller then 0.02 Ether");
-    	//}
+    	else
+    	{
+    		alert("Wallet balance is smaller then 0.02 Ether");
+    	}
     }
     else
     {    	
