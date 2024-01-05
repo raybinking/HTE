@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+
+    <!-- Web3.js LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- Web3.js LIBRARY -->
+    <script language="javascript" type="text/javascript" src="web3.min.js"
+    ></script>    
+    
+    <title>NFT Mint</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(to bottom right, #B0E0E6, #87CEEB);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        /* LOGIN SECTION */
+        .login-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .login-button {
+            background: #21bf96;
+            color: #fff;
+            padding: 13px 35px;
+            font-size: 24px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .instruction {
+            text-align: center;
+            color: #21bf96;
+            color: #fefaf5;
+            margin: 1rem 0;
+        }
+        
+        /* DASHBOARD SECTION */
+        .dashboard-section {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #buttons {
+            margin-top: 50px;
+            display: flex;
+            gap: 20px;
+        }        
+        
+        .free-button,
+        .mint-button {
+            padding: 10px 20px;
+            background: #4682B4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .free-button:hover,
+        .mint-button:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>    
+    <!-- LOGIN SECTION -->
+    <section class="login-section">
+        <button class="login-button">Login with MetaMask</button>
+        <span class="instruction">
+        Ensure to have an Ethereum based wallet installed i.e MetaMask
+        </span>
+    </section>
+    
+    <!-- DASHBOARD SECTION -->
+    <section class="dashboard-section">
+    	<br>
+    	<button class="free-button">Mint (free, whitelist)</button>
+    	<br>
+        <button class="mint-button">Mint (cost 0.02 Ether)</button>
+    </section>
+
+    <script>
+        
+// Create global userWalletAddress variable
+window.userWalletAddress = null;
+
+// when the browser is ready
+window.onload = async (event) => {
+    // check if ethereum extension is installed
+    if (window.ethereum) {
+        // create web3 instance
+        window.web3 = new Web3(window.ethereum);
+    
+        // contract address
+        //NFT_address = "0x226Eb54B387F6877831b24E78bF04A829FfCDB6f";
+        NFT_address = "0x12dc17440614af3571446AD7a503B909C8A5534e"; //sepolia
+	    // abi
+        NFT_abi = [
+            {"inputs":[],"stateMutability":"nonpayable","type":"constructor"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},
+            {"indexed":true,"internalType":"address","name":"approved","type":"address"},
+            {"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},
+            {"indexed":true,"internalType":"address","name":"operator","type":"address"},
+            {"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},
+            {"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},
+            {"indexed":true,"internalType":"address","name":"to","type":"address"},
+            {"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},
+            {"inputs":[],"name":"MAX_HTE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"to","type":"address"},
+            {"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address[]","name":"array","type":"address[]"}],"name":"editWhitelistOne","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"flipSaleState","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"owner","type":"address"},
+            {"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"mintMuerehte","outputs":[],"stateMutability":"payable","type":"function"},
+            {"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"reserveMintMuerehte","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"from","type":"address"},
+            {"internalType":"address","name":"to","type":"address"},
+            {"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"from","type":"address"},
+            {"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},
+            {"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"saleIsActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"operator","type":"address"},
+            {"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"baseURI","type":"string"}],"name":"setBaseURI","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"standardMuerehteCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},
+            {"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},
+            {"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"whitelistOneMint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}      
+        ];
+    
+        if (web3.eth.Contract) {
+            // create contract instance
+            contract = new web3.eth.Contract(NFT_abi, NFT_address);
+        } else {
+            // prompt user to check contract instance
+            alert("Please check contract instance");
+        }	
+    } else {
+        // prompt user to install Metamask
+        alert("Please install MetaMask wallet");
+    }
+
+    // check if user is already logged in and update the global userWalletAddress variable
+    window.userWalletAddress = window.localStorage.getItem("userWalletAddress");
+        
+    // show the user dashboard
+    showUserDashboard();
+};
+
+// Web3 login function
+const loginWithEth = async () => {
+    // check if there is global window.web3 instance
+    if (window.web3) 
+    {
+        try {
+            // get the user's ethereum account - prompts metamask to login
+            const selectedAccount = await window.ethereum.request({method: "eth_requestAccounts", })
+            .then((accounts) => accounts[0])
+            .catch(() => {
+                // if the user cancels the login prompt
+                throw Error("Please select an account");
+            });
+
+            // set the global userWalletAddress variable to selected account
+            window.userWalletAddress = selectedAccount;
+
+            // store the user's wallet address in local storage
+            window.localStorage.setItem("userWalletAddress", selectedAccount);
+
+            // show the user dashboard
+            showUserDashboard();
+        } 
+        catch (error) 
+        {
+            alert(error);
+        }
+    } 
+    else 
+    {
+        alert("wallet not found");
+    }     
+};
+
+// function to show the user dashboard
+const showUserDashboard = async () => {
+    // if the user is not logged in - userWalletAddress is null
+    if (!window.userWalletAddress) {
+        // show the login section
+        document.querySelector(".login-section").style.display = "flex";
+
+        // hide the user dashboard section
+        document.querySelector(".dashboard-section").style.display = "none";
+
+        // return from the function
+        return false;
+    }
+
+    // hide the login section
+    document.querySelector(".login-section").style.display = "none";
+
+    // show the dashboard section
+    document.querySelector(".dashboard-section").style.display = "flex";
+  
+};
+
+const reserveMintMuerehte = async () => {  
+    // check if there is global userWalletAddress variable
+    if (!window.userWalletAddress) 
+    {
+        return false;
+    }
+    
+    // mint whitelist
+    isWhitelist = await contract.methods.whitelistOneMint(window.userWalletAddress).call();
+    if (isWhitelist)
+    {
+    	contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "3000000" });
+    }
+    else
+    {    	
+        alert("Mint with whitelist is not available");
+    }   
+}
+
+const mintMuerehte = async () => {  
+    // check if there is global userWalletAddress variable
+    if (!window.userWalletAddress) 
+    {
+        return false;
+    }
+    // saleIsActive
+    isSaleActive = await contract.methods.saleIsActive().call();
+    if (isSaleActive)
+    {
+    	// wallet balance
+        walletBalance = await window.ethereum.request({method: "eth_getBalance", params: [window.userWalletAddress, "latest"]});
+        if (walletBalance > 20000000000000000)
+        {        	
+        	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "3000000", value: web3.utils.toWei("0.02", "ether") });
+        }   	
+    	else
+    	{
+    		alert("Wallet balance is smaller then 0.02 Ether");
+    	}
+    }
+    else
+    {    	
+        alert("Mint is not available now");
+    }   
+}
+
+// when the user clicks the free button run the loginWithEth function
+document.querySelector(".login-button").addEventListener("click", loginWithEth);
+        
+// when the user clicks the free button run the loginWithEth function
+document.querySelector(".free-button").addEventListener("click", reserveMintMuerehte);
+        
+// when the user clicks the mint button run the loginWithEth function
+document.querySelector(".mint-button").addEventListener("click", mintMuerehte);    
+    </script>
+</body>
+</html>
