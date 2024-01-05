@@ -1,6 +1,9 @@
 // Create global userWalletAddress variable
 window.userWalletAddress = null;
 
+// remove the user's wallet address from local storage
+window.localStorage.removeItem("userWalletAddress");
+
 // when the browser is ready
 window.onload = async (event) => {
     // check if ethereum extension is installed
@@ -298,7 +301,7 @@ const freeMint = async () => {
     	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
-    	    contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "2000" });
+    	    contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "2000000" });
         }
         else
         {
@@ -326,7 +329,7 @@ const mint = async () => {
         walletBalance = await window.ethereum.request({method: "eth_getBalance", params: [window.userWalletAddress, "latest"]});
         if (walletBalance > 20000000000000000)
         {        	
-        	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "2000", value: web3.utils.toWei("0.02", "ether") });
+        	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "2000000", value: web3.utils.toWei("0.02", "ether") });
         }   	
     	else
     	{
