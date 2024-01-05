@@ -292,9 +292,10 @@ const freeMint = async () => {
     
     // mint whitelist
     isWhitelist = await contract.methods.whitelistOneMint(window.userWalletAddress).call();
-    if (isWhitelist)
+    _totalSupply = await contract.methods.totalSupply().call();
+    if ((isWhitelist) || (_totalSupply < 20))
     {
-    	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();
+    	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
     	    contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "2000000" });
