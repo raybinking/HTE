@@ -1,9 +1,6 @@
 // Create global userWalletAddress variable
 window.userWalletAddress = null;
 
-// remove the user's wallet address from local storage
-window.localStorage.removeItem("userWalletAddress");
-
 // when the browser is ready
 window.onload = async (event) => {
     // check if ethereum extension is installed
