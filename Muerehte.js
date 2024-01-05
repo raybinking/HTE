@@ -292,13 +292,13 @@ const freeMint = async () => {
     
     // mint whitelist
     isWhitelist = await contract.methods.whitelistOneMint(window.userWalletAddress).call();
-    _totalSupply = await contract.methods.totalSupply().call();
-    if ((isWhitelist) || (_totalSupply < 20))
+    //_totalSupply = await contract.methods.totalSupply().call();
+    if (isWhitelist) //((isWhitelist) || (_totalSupply < 20))
     {
     	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
-    	    contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "200000" });
+    	    contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: "210000" });
         }
         else
         {
@@ -326,7 +326,7 @@ const mint = async () => {
         walletBalance = await window.ethereum.request({method: "eth_getBalance", params: [window.userWalletAddress, "latest"]});
         if (walletBalance > 20000000000000000)
         {        	
-        	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "200000", value: web3.utils.toWei("0.02", "ether") });
+        	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: "210000", value: web3.utils.toWei("0.02", "ether") });
         }   	
     	else
     	{
