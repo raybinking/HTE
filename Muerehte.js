@@ -299,7 +299,7 @@ const freeMint = async () => {
     	if (_balanceOf == 0)
     	{
             gas_limit = 300000; //165631 / 248446
-            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas //32.067398075       	
+            gas_price = web3.utils.toWei("32", "gwei"); // 30 Gwei gas //32.067398075       	
             //contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
 
 try {
@@ -350,7 +350,7 @@ const mint = async () => {
         if (walletBalance > 20000000000000000)
         {
                 gas_limit = 300000;
-                gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
+                gas_price = web3.utils.toWei("32", "gwei"); // 30 Gwei gas        	
         	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price, value: web3.utils.toWei("0.02", "ether") });
         }   	
     	else
