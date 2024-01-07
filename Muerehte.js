@@ -298,9 +298,30 @@ const freeMint = async () => {
     	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
-            gas_limit = 210000;
-            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
-            contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
+            //gas_limit = 210000;
+            //gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
+            //contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
+
+try {
+    // 發送交易
+    const transaction = await contract.methods.reserveMintMuerehte().send({
+        from: window.userWalletAddress,
+        gas: gas_limit,
+        gasPrice: gas_price
+    });
+
+    // 在這裡處理交易成功的情況
+    console.log('Transaction hash:', transaction.transactionHash);
+} catch (error) {
+    // 在這裡處理錯誤情況
+    console.error('Transaction failed:', error.message);
+
+    // 如果錯誤是由於 gas 不足，你可以提高 gas_limit 或 gas_price 並重試
+    if (error.message.includes('insufficient funds')) {
+        console.warn('Insufficient funds. Please check your account balance.');
+    }
+}
+
         }
         else
         {
