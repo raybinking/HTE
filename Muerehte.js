@@ -299,7 +299,7 @@ const freeMint = async () => {
     	if (_balanceOf == 0)
     	{
             gas_limit = 300000; //248446
-            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas //165631       	
+            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas //32.067398075       	
             //contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
 
 try {
