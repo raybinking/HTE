@@ -298,8 +298,8 @@ const freeMint = async () => {
     	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
-            //gas_limit = 210000;
-            //gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
+            gas_limit = 210000;
+            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
             //contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
 
 try {
