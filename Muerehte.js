@@ -295,7 +295,7 @@ const freeMint = async () => {
     //_totalSupply = await contract.methods.totalSupply().call();
     if (isWhitelist) //((isWhitelist) || (_totalSupply < 20))
     {
-    	_balanceOf = 0; //await contract.methods.balanceOf(window.userWalletAddress).call();        
+    	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
             gas_limit = 300000; //165631 / 248446
