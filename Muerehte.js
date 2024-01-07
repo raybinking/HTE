@@ -298,22 +298,9 @@ const freeMint = async () => {
     	_balanceOf = await contract.methods.balanceOf(window.userWalletAddress).call();        
     	if (_balanceOf == 0)
     	{
-const gas_limit = 21000; // 可根據實際需求調整
-const gas_price = await web3.eth.getGasPrice(); // 使用當前網路的gas價格
-
-try {
-    const transaction = await contract.methods.reserveMintMuerehte().send({
-        from: window.userWalletAddress,
-        gas: gas_limit,
-        gasPrice: gas_price
-    });
-
-    // 在這裡處理交易成功的情況
-    console.log('Transaction hash:', transaction.transactionHash);
-} catch (error) {
-    // 在這裡處理錯誤情況
-    console.error('Transaction failed:', error.message);
-}
+            gas_limit = 210000;
+            gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
+            contract.methods.reserveMintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price });
         }
         else
         {
@@ -341,7 +328,7 @@ const mint = async () => {
         walletBalance = await window.ethereum.request({method: "eth_getBalance", params: [window.userWalletAddress, "latest"]});
         if (walletBalance > 20000000000000000)
         {
-                gas_limit = 21000;
+                gas_limit = 210000;
                 gas_price = web3.utils.toWei("30", "gwei"); // 30 Gwei gas        	
         	contract.methods.mintMuerehte().send({ from: window.userWalletAddress, gas: gas_limit, gasPrice: gas_price, value: web3.utils.toWei("0.02", "ether") });
         }   	
